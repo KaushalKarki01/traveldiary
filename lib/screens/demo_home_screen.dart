@@ -3,6 +3,7 @@ import 'package:traveldiary/components/travel_card.dart';
 import 'package:traveldiary/database/local/database_helper.dart';
 import 'package:traveldiary/model/travel_destination.dart';
 import 'package:traveldiary/screens/travel_description_note_screen.dart';
+import 'package:traveldiary/screens/travel_detail_screen.dart';
 
 class DemoHomeScreen extends StatefulWidget {
   const DemoHomeScreen({super.key});
@@ -44,15 +45,11 @@ class _DemoHomeScreenState extends State<DemoHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TRAVEL DIARY'),
+        title: const Text(
+          'TRAVEL DIARY',
+        ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                print(destinations[0]);
-              },
-              icon: const Icon(Icons.info))
-        ],
+        foregroundColor: Theme.of(context).colorScheme.tertiary,
       ),
       body: destinations.isNotEmpty
           ? GridView.builder(
@@ -66,7 +63,15 @@ class _DemoHomeScreenState extends State<DemoHomeScreen> {
                 return TravelCard(
                     destination: destination,
                     onTap: () {
-                      print(destination.mediaPaths?[0]);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TravelDetailScreen(
+                                title: destination.title,
+                                description: destination.desc,
+                                onDelete: () {}),
+                          ));
+                      print(destination.desc);
                     });
               },
             )

@@ -16,7 +16,7 @@ class TravelCard extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.only(bottom: 8.0),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black45, width: 2.0),
+          border: Border.all(color: const Color(0xff00264d), width: 1.5),
           borderRadius: BorderRadius.circular(16.0),
           color: Theme.of(context).colorScheme.surface,
         ),

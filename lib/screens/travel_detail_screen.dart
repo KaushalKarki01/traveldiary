@@ -1,15 +1,16 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/quill_delta.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
 class TravelDetailScreen extends StatelessWidget {
-  final String path;
   final String title;
   final String description;
   final void Function()? onDelete;
   const TravelDetailScreen({
     super.key,
-    required this.path,
     required this.title,
     required this.description,
     required this.onDelete,
@@ -17,57 +18,44 @@ class TravelDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> jsonData = jsonDecode(description);
+    Delta delta = Delta.fromJson(jsonData);
+
+    // Create a QuillController with the parsed Delta content
+    final quillController = QuillController(
+      document: Document.fromDelta(delta),
+      selection: const TextSelection.collapsed(offset: 0),
+    );
     return Scaffold(
-      body: Column(
-        children: [
-          Flexible(
-            child: Image.file(
-              File(path),
-              width: double.infinity,
-            ),
+      appBar: AppBar(
+        title: Text(title),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.edit),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title.toUpperCase(),
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: onDelete,
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.redAccent,
             ),
           ),
         ],
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(
+              top: 8.0, right: 10.0, bottom: 4.0, left: 10.0),
+          child: QuillEditor.basic(
+            controller: quillController,
+            configurations: QuillEditorConfigurations(
+              embedBuilders: FlutterQuillEmbeds.editorBuilders(),
+              // readOnlyMouseCursor: MouseCursor.defer,
+            ),
+          ),
+        ),
       ),
     );
   }
