@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:traveldiary/screens/demo_home_screen.dart';
+import 'package:traveldiary/screens/splash%20screen/splash_screen.dart';
 
 void main() {
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }
 
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w200),
         ),
       ),
-      home: const DemoHomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
